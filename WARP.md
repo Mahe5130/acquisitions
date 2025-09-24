@@ -7,6 +7,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 This is a Node.js Express application called "Acquisitions" that demonstrates modern full-stack architecture with Docker containerization, Neon database integration, and comprehensive security middleware. The app features a complete authentication system with JWT tokens and role-based access control.
 
 ## Key Technologies
+
 - **Runtime**: Node.js 20 with ES modules
 - **Framework**: Express.js 5.1.0
 - **Database**: PostgreSQL via Neon (serverless/cloud and local development)
@@ -20,6 +21,7 @@ This is a Node.js Express application called "Acquisitions" that demonstrates mo
 ## Architecture Overview
 
 ### Layered Architecture
+
 The codebase follows a clean layered architecture:
 
 ```
@@ -38,12 +40,14 @@ src/
 ```
 
 ### Database Architecture
+
 - **Development**: Uses Neon Local proxy that creates ephemeral branches for clean testing
 - **Production**: Direct connection to Neon Cloud (PostgreSQL)
 - **ORM**: Drizzle with type-safe queries and migrations
 - **Models**: Currently has User model with authentication fields
 
 ### Security Architecture
+
 - **Input Validation**: Zod schemas validate all incoming data
 - **Authentication**: JWT tokens stored in httpOnly cookies
 - **Password Security**: bcrypt hashing with salt rounds
@@ -54,6 +58,7 @@ src/
 ## Development Commands
 
 ### Docker Development (Recommended)
+
 ```powershell
 # Start development environment with Neon Local
 .\start-dev.ps1
@@ -73,6 +78,7 @@ docker-compose -f docker-compose.dev.yml exec app npm run db:studio
 ```
 
 ### Local Development (Without Docker)
+
 ```bash
 npm run dev          # Start with --watch flag for hot reload
 npm start            # Production start
@@ -83,6 +89,7 @@ npm run format:check # Check formatting
 ```
 
 ### Database Commands
+
 ```bash
 # Generate new migration from schema changes
 npm run db:generate
@@ -90,7 +97,7 @@ npm run db:generate
 # Apply migrations (development)
 docker-compose -f docker-compose.dev.yml exec app npm run db:migrate
 
-# Apply migrations (production)  
+# Apply migrations (production)
 docker-compose -f docker-compose.prod.yml exec app npm run db:migrate
 
 # Open Drizzle Studio (database GUI)
@@ -98,6 +105,7 @@ npm run db:studio
 ```
 
 ### Production Deployment
+
 ```bash
 # Deploy to production with Neon Cloud
 docker-compose --env-file .env.prod.local -f docker-compose.prod.yml up -d --build
@@ -112,7 +120,9 @@ docker-compose -f docker-compose.prod.yml logs -f app
 ## Code Organization Patterns
 
 ### Path Aliases
+
 The project uses Node.js subpath imports for clean imports:
+
 - `#config/*` → `./src/config/*`
 - `#controllers/*` → `./src/controllers/*`
 - `#middleware/*` → `./src/middleware/*`
@@ -123,20 +133,25 @@ The project uses Node.js subpath imports for clean imports:
 - `#validations/*` → `./src/validations/*`
 
 ### Controller Pattern
+
 Controllers are thin HTTP handlers that:
+
 1. Validate input using Zod schemas
 2. Call service layer for business logic
 3. Handle errors and format responses
 4. Set authentication cookies when needed
 
 ### Service Pattern
+
 Services contain business logic and:
+
 - Interact with database through Drizzle ORM
 - Handle password hashing/comparison
 - Manage user creation and authentication
 - Use structured logging
 
 ### Database Migrations
+
 1. Modify schema in `src/models/*.js`
 2. Generate migration: `npm run db:generate`
 3. Apply migration: `npm run db:migrate`
@@ -144,6 +159,7 @@ Services contain business logic and:
 ## Environment Configuration
 
 ### Development (.env.development)
+
 - `NEON_API_KEY`: Neon API key for local branch creation
 - `NEON_PROJECT_ID`: Your Neon project ID
 - `PARENT_BRANCH_ID`: Branch to create ephemeral branches from
@@ -152,6 +168,7 @@ Services contain business logic and:
 - `DATABASE_URL`: Auto-configured to use neon-local:5432
 
 ### Production (.env.production)
+
 - `DATABASE_URL`: Full Neon Cloud connection string
 - `JWT_SECRET`: Production JWT secret (must be different from dev)
 - `COOKIE_SECRET`: Production cookie secret
@@ -161,17 +178,20 @@ Services contain business logic and:
 ## API Structure
 
 ### Authentication Endpoints
+
 - `POST /api/auth/sign-up` - User registration
 - `POST /api/auth/sign-in` - User login
 - `POST /api/auth/sign-out` - User logout
 
 ### User Endpoints
+
 - `GET /api/users` - Fetch all users
 - `GET /api/users/:id` - Get user by ID (placeholder)
 - `PUT /api/users/:id` - Update user (placeholder)
 - `DELETE /api/users/:id` - Delete user (placeholder)
 
 ### Utility Endpoints
+
 - `GET /` - Basic health check
 - `GET /health` - Detailed health status
 - `GET /api` - API status
@@ -179,13 +199,17 @@ Services contain business logic and:
 ## Development Workflow
 
 ### Database Development
+
 The development environment uses Neon Local which creates ephemeral database branches. Each container restart gives you a fresh database state, perfect for testing migrations and schema changes.
 
 ### Hot Reload
+
 When using Docker development mode, source code is mounted as a volume, and the app runs with `--watch` flag for automatic restarts on file changes.
 
 ### Security Testing
+
 The application includes comprehensive security middleware. Test security features by:
+
 1. Attempting requests without authentication
 2. Testing rate limiting with repeated requests
 3. Validating input sanitization with malicious payloads
@@ -193,16 +217,19 @@ The application includes comprehensive security middleware. Test security featur
 ## Troubleshooting
 
 ### Neon Local Issues
+
 - Ensure your `NEON_API_KEY`, `NEON_PROJECT_ID`, and `PARENT_BRANCH_ID` are correct
 - Check that port 5432 isn't already in use
 - Wait for healthcheck to pass before app starts
 
 ### Database Connection Issues
+
 - Development: App connects to `neon-local:5432` within Docker network
 - Production: Verify your Neon Cloud `DATABASE_URL` is complete and valid
 - Check database logs: `docker-compose logs neon-local`
 
 ### Authentication Issues
+
 - JWT secrets must be set in environment variables
 - Cookies are httpOnly and require proper domain configuration
 - Check token expiration and refresh logic
@@ -210,17 +237,20 @@ The application includes comprehensive security middleware. Test security featur
 ## Code Quality Standards
 
 ### Linting and Formatting
+
 - ESLint configured with Prettier integration
 - Use `npm run lint:fix` before commits
 - Format code with `npm run format`
 
 ### Error Handling
+
 - All async operations wrapped in try-catch
 - Structured error logging with Winston
 - Consistent error response formats
 - Service layer throws errors, controllers handle them
 
 ### Database Queries
+
 - Use Drizzle ORM type-safe queries
 - Normalize email addresses before database operations
 - Never return password fields in API responses

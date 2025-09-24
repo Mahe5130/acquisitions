@@ -13,12 +13,14 @@ A Node.js Express application with Drizzle ORM, configured to work with both Neo
 This setup provides two distinct environments:
 
 ### Development Environment
+
 - **Neon Local**: Uses a Docker proxy that creates ephemeral database branches
 - **Fresh Database**: Each container restart gives you a clean database state
 - **Local Network**: Application connects to `neon-local:5432` within Docker network
 - **Automatic Cleanup**: Database branches are deleted when containers stop
 
 ### Production Environment
+
 - **Neon Cloud**: Direct connection to your production Neon database
 - **Persistent Data**: Uses your actual production database
 - **Security Hardened**: Read-only filesystem, non-root user, resource limits
@@ -29,6 +31,7 @@ This setup provides two distinct environments:
 ### Development Setup
 
 1. **Clone and navigate to the project:**
+
    ```bash
    git clone <your-repo-url>
    cd acquisitions
@@ -36,31 +39,35 @@ This setup provides two distinct environments:
 
 2. **Update your development environment file:**
    Edit `.env.development` with your actual Neon credentials:
+
    ```bash
    # Get these from your Neon Console (https://console.neon.com)
    NEON_API_KEY=napi_your_actual_api_key_here
    NEON_PROJECT_ID=your_actual_project_id_here
    PARENT_BRANCH_ID=br_your_actual_branch_id_here
-   
+
    # Application secrets (generate secure values)
    JWT_SECRET=your_development_jwt_secret
    COOKIE_SECRET=your_development_cookie_secret
    ```
 
 3. **Start the development environment (Easy Mode):**
-   
+
    **Windows (PowerShell):**
+
    ```powershell
    .\start-dev.ps1
    ```
-   
+
    **Linux/Mac (Bash):**
+
    ```bash
    chmod +x start-dev.sh
    ./start-dev.sh
    ```
 
 4. **Or start manually:**
+
    ```bash
    docker-compose --env-file .env.development -f docker-compose.dev.yml up --build
    ```
@@ -78,15 +85,17 @@ This setup provides two distinct environments:
 ### Production Setup
 
 1. **Create your production environment file:**
+
    ```bash
    cp .env.production .env.prod.local
    ```
 
 2. **Edit `.env.prod.local` with your production values:**
+
    ```bash
    # Your actual Neon Cloud database URL (from Neon Console)
    DATABASE_URL=postgres://username:password@ep-cool-darkness-123456.us-east-1.aws.neon.tech/dbname?sslmode=require
-   
+
    # Generate secure production secrets
    JWT_SECRET=your_secure_production_jwt_secret_here
    COOKIE_SECRET=your_secure_production_cookie_secret_here
@@ -122,6 +131,7 @@ acquisitions/
 ## 🔧 Environment Variables
 
 ### Required for Development (.env.development)
+
 - `NEON_API_KEY`: Your Neon API key from the console
 - `NEON_PROJECT_ID`: Your Neon project ID
 - `PARENT_BRANCH_ID`: The branch to create ephemeral branches from
@@ -129,12 +139,14 @@ acquisitions/
 - `COOKIE_SECRET`: Secret for cookie signing
 
 ### Required for Production (.env.production)
+
 - `DATABASE_URL`: Your full Neon Cloud database connection string
 - `JWT_SECRET`: Production JWT secret (different from development)
 - `COOKIE_SECRET`: Production cookie secret
 - `CORS_ORIGIN`: Your production domain
 
 ### Optional Environment Variables
+
 - `PORT`: Application port (default: 3002)
 - `LOG_LEVEL`: Logging level (development: debug, production: info)
 - `NODE_ENV`: Environment mode (set automatically)
@@ -203,16 +215,19 @@ docker-compose -f docker-compose.dev.yml exec app npm run db:studio
 ### Development Issues
 
 **Neon Local container won't start:**
+
 - Verify your `NEON_API_KEY`, `NEON_PROJECT_ID`, and `PARENT_BRANCH_ID` are correct
 - Check if port 5432 is already in use: `netstat -an | grep 5432`
 - Ensure your API key has the required permissions
 
 **App can't connect to database:**
+
 - Wait for the Neon Local healthcheck to pass (check with `docker-compose logs neon-local`)
 - Verify the `DATABASE_URL` in development uses `neon-local` as the hostname
 - Check that both services are on the same Docker network
 
 **SSL/TLS connection issues:**
+
 - The Neon Local proxy uses self-signed certificates
 - Ensure `sslmode=require` is in your connection string
 - For Node.js apps, you might need `ssl: { rejectUnauthorized: false }` in your database config
@@ -220,11 +235,13 @@ docker-compose -f docker-compose.dev.yml exec app npm run db:studio
 ### Production Issues
 
 **Can't connect to Neon Cloud:**
+
 - Verify your `DATABASE_URL` is correct and complete
 - Ensure your Neon project allows connections from your deployment IP
 - Check that your database exists and credentials are valid
 
 **Health checks failing:**
+
 - Verify the `/health` endpoint is accessible
 - Check application logs: `docker-compose -f docker-compose.prod.yml logs app`
 - Ensure the database connection is established
@@ -232,11 +249,13 @@ docker-compose -f docker-compose.dev.yml exec app npm run db:studio
 ### General Docker Issues
 
 **Build failures:**
+
 - Clear Docker cache: `docker system prune -a`
 - Ensure all files are properly copied (check `.dockerignore`)
 - Verify Node.js version compatibility
 
 **Permission issues:**
+
 - On Linux/Mac, ensure proper file permissions
 - Check that the `nodejs` user can access required directories
 
@@ -253,11 +272,13 @@ This project uses Drizzle ORM for database management:
 ## 🔒 Security Best Practices
 
 ### Development
+
 - Never commit `.env` files with real credentials
 - Use different secrets for development and production
 - Neon Local creates isolated, ephemeral branches
 
 ### Production
+
 - Use strong, randomly generated secrets
 - Enable HTTPS in production (consider adding nginx reverse proxy)
 - Regularly rotate API keys and secrets
@@ -267,11 +288,13 @@ This project uses Drizzle ORM for database management:
 ## 🚀 Deployment Options
 
 ### Local Development
+
 - Use `docker-compose.dev.yml` with Neon Local
 - Automatic database branch management
 - Hot reload with volume mounts
 
 ### Production Deployment Options
+
 1. **Docker Compose** (single server)
 2. **Docker Swarm** (multi-server)
 3. **Kubernetes** (adapt the compose files)
@@ -287,6 +310,7 @@ This project uses Drizzle ORM for database management:
 ## 🆘 Support
 
 If you encounter issues:
+
 1. Check the troubleshooting section above
 2. Review Docker and application logs
 3. Verify all environment variables are set correctly

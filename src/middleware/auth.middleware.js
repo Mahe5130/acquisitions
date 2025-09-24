@@ -8,7 +8,7 @@ export const authenticateToken = (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Access token is required'
+        message: 'Access token is required',
       });
     }
 
@@ -19,25 +19,27 @@ export const authenticateToken = (req, res, next) => {
     logger.error('Authentication failed:', e);
     return res.status(401).json({
       error: 'Unauthorized',
-      message: 'Invalid or expired token'
+      message: 'Invalid or expired token',
     });
   }
 };
 
-export const requireRole = (allowedRoles) => {
+export const requireRole = allowedRoles => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Authentication required'
+        message: 'Authentication required',
       });
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      logger.warn(`Access denied: User ${req.user.email} (${req.user.role}) tried to access resource requiring roles: ${allowedRoles.join(', ')}`);
+      logger.warn(
+        `Access denied: User ${req.user.email} (${req.user.role}) tried to access resource requiring roles: ${allowedRoles.join(', ')}`
+      );
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'Insufficient permissions'
+        message: 'Insufficient permissions',
       });
     }
 

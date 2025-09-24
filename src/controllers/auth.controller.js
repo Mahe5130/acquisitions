@@ -2,7 +2,7 @@ import logger from '#config/logger.js';
 import { signupSchema, signInSchema } from '#validations/auth.validations.js';
 import { formatValidationError } from '#utils/format.js';
 import { createUser, authenticateUser } from '#services/auth.service.js';
-import {jwtToken} from '#utils/jwt.js';
+import { jwtToken } from '#utils/jwt.js';
 import { cookies } from '#utils/cookies.js';
 
 export const signup = async (req, res, next) => {
@@ -18,7 +18,7 @@ export const signup = async (req, res, next) => {
     const { name, email, password, role } = validationResult.data;
 
     // Auth Service
-    const user = await createUser({name, email, password, role});
+    const user = await createUser({ name, email, password, role });
     const token = jwtToken.sign({
       id: user.id,
       email: user.email,
@@ -56,7 +56,7 @@ export const signin = async (req, res, next) => {
         details: formatValidationError(validationResult.error),
       });
     }
-    
+
     const { email, password } = validationResult.data;
 
     // Auth Service
@@ -66,10 +66,10 @@ export const signin = async (req, res, next) => {
       email: user.email,
       role: user.role,
     });
-    
+
     cookies.set(res, 'token', token);
     logger.info(`User signed in successfully: ${email}`);
-    
+
     res.status(200).json({
       message: 'User signed in successfully',
       user: {
@@ -94,7 +94,7 @@ export const signout = async (req, res, next) => {
   try {
     cookies.clear(res, 'token');
     logger.info('User signed out successfully');
-    
+
     res.status(200).json({
       message: 'User signed out successfully',
     });
