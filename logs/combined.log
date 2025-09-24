@@ -77,3 +77,33 @@
 {"level":"warn","message":"Rate limit exceeded","path":"/health","service":"acquisitions-api","userAgent":"HTTPie"}
 {"level":"info","message":"::1 - - [18/Sep/2025:13:05:07 +0000] \"POST /health HTTP/1.1\" 403 51 \"-\" \"HTTPie\"","service":"acquisitions-api"}
 {"level":"info","message":"::1 - - [18/Sep/2025:13:10:10 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"Hello from Acquisitions!","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:06:12:41 +0000] \"GET / HTTP/1.1\" 200 24 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:06:12:41 +0000] \"GET /favicon.ico HTTP/1.1\" 404 150 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"","service":"acquisitions-api"}
+{"level":"info","message":"Getting users ...","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:06:13:00 +0000] \"GET /api/users HTTP/1.1\" 200 204 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"","service":"acquisitions-api"}
+{"level":"info","message":"Hello from Acquisitions!","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:12:35:16 +0000] \"GET / HTTP/1.1\" 200 24 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:12:35:29 +0000] \"GET /api/users/8 HTTP/1.1\" 401 61 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:12:35:56 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 400 92 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"User mahe@test.com authenticated successfully","service":"acquisitions-api"}
+{"level":"info","message":"User signed in successfully: mahe@test.com","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:12:36:59 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 110 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"Getting user with ID: 8","service":"acquisitions-api"}
+{"level":"info","message":"Retrieved user with ID: 8","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [22/Sep/2025:12:38:01 +0000] \"GET /api/users/8 HTTP/1.1\" 200 190 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:55:16 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:55:16 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:55:16 +0000] \"GET /nonexistent HTTP/1.1\" 404 27 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:56:12 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:56:12 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:56:12 +0000] \"GET /nonexistent HTTP/1.1\" 404 27 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:57:26 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:57:26 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:06:57:26 +0000] \"GET /nonexistent HTTP/1.1\" 404 27 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:07:02:15 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:07:02:16 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:07:02:16 +0000] \"GET /nonexsistent HTTP/1.1\" 404 27 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:07:39:07 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:07:39:07 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [23/Sep/2025:07:39:07 +0000] \"GET /nonexistent HTTP/1.1\" 404 27 \"-\" \"-\"","service":"acquisitions-api"}

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Neon Local Proxy - Creates ephemeral branches for development
+  neon-local:
+    image: neondatabase/neon_local:latest
+    container_name: acquisitions_neon_local
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.development
+    volumes:
+      # Optional: Persist branches per Git branch (uncomment if needed)
+      # - ./.neon_local/:/tmp/.neon_local
+      # - ./.git/HEAD:/tmp/.git/HEAD:ro,consistent
+    networks:
+      - acquisitions_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Main Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acquisitions_app_dev
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env.development
+    depends_on:
+      neon-local:
+        condition: service_healthy
+    networks:
+      - acquisitions_network
+    volumes:
+      # Mount source code for development (optional - for hot reload)
+      - ./src:/usr/src/app/src:ro
+      # Create volume for node_modules to avoid conflicts
+      - node_modules_volume:/usr/src/app/node_modules
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3002/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  acquisitions_network:
+    driver: bridge
+
+volumes:
+  node_modules_volume:
